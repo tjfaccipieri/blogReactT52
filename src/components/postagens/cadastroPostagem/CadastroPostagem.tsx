@@ -10,11 +10,13 @@ import {
   Typography,
 } from '@material-ui/core';
 import React, { ChangeEvent, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import useLocalStorage from 'react-use-localstorage';
 import Postagem from '../../../models/Postagem';
 import Tema from '../../../models/Tema';
+import User from '../../../models/User';
 import { buscaId, buscar, post, put } from '../../../services/Service';
+import { TokenState } from '../../../store/tokens/tokenReducer';
 import './CadastroPostagem.css';
 
 function CadastroPostagem() {
@@ -22,7 +24,14 @@ function CadastroPostagem() {
 
   const { id } = useParams<{ id: string }>();
 
-  const [token, setToken] = useLocalStorage('token');
+  const token = useSelector<TokenState, TokenState['token']>(
+    (state) => state.token
+  );
+
+  //buscar o ID armazenado no Store do redux
+  const userId = useSelector<TokenState, TokenState['id']>(
+    (state) => state.id
+  )
 
   const [temas, setTemas] = useState<Tema[]>([]);
 
@@ -37,7 +46,17 @@ function CadastroPostagem() {
     texto: '',
     data: '',
     tema: null,
+    usuario: null //adicionando o atributo usuário na postagem
   });
+
+  //useState para gerar o usuario
+  const [usuario, setUsuario] = useState<User>({
+    id: +userId,    // Faz uma conversão de String para Number
+    nome: '',
+    usuario: '',
+    senha: '',
+    foto: ''
+})
 
   // verificação do token
   useEffect(() => {
@@ -68,6 +87,7 @@ function CadastroPostagem() {
     setPostagem({
       ...postagem,
       tema: tema,
+      usuario: usuario // adicionar efetivamente o usuario gerado acima, na postagem que vai para o backend
     });
   }, [tema]);
 

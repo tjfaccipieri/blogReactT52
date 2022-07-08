@@ -5,12 +5,16 @@ import './ListaPostagem.css';
 import useLocalStorage from 'react-use-localstorage';
 import Postagem from '../../../models/Postagem';
 import { buscar } from '../../../services/Service';
+import { useSelector } from 'react-redux';
+import { TokenState } from '../../../store/tokens/tokenReducer';
 
 function ListaPostagem() {
 
   let navigate = useNavigate()
 
-  const [token, setToken] = useLocalStorage('token')
+  const token = useSelector<TokenState, TokenState['token']>(
+    (state) => state.token
+  )
 
   const [posts, setPosts] = useState<Postagem[]>([])
 
@@ -51,6 +55,9 @@ function ListaPostagem() {
             </Typography>
             <Typography variant="body2" component="p">
               {post.tema?.descricao}
+            </Typography>
+            <Typography variant="body2" component="p">
+              Postado por: {post.usuario?.nome}
             </Typography>
           </CardContent>
           <CardActions>

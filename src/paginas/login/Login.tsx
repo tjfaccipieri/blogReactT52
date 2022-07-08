@@ -1,15 +1,19 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { Grid, Box, Typography, TextField, Button } from '@material-ui/core';
 import { Link, useNavigate } from 'react-router-dom';
-import useLocalStorage from 'react-use-localstorage';
 import { login } from '../../services/Service';
 import UserLogin from '../../models/UserLogin';
 import './Login.css';
+import { useDispatch } from 'react-redux';
+import { addId, addToken } from '../../store/tokens/action';
 
 function Login() {
   let history = useNavigate();
+
+  let dispatch = useDispatch()
   
-  const [token, setToken] = useLocalStorage('token');
+  const [token, setToken] = useState('');
+
   const [userLogin, setUserLogin] = useState<UserLogin>({
     id: 0,
     nome: '',
@@ -18,6 +22,16 @@ function Login() {
     senha: '',
     token: '',
   });
+
+  // Crie mais um State para pegar os dados retornados a API
+  const [respUserLogin, setRespUserLogin] = useState<UserLogin>({
+    id: 0,
+    nome: '',
+    usuario: '',
+    senha: '',
+    token: '',
+    foto: ""
+})
 
   function updatedModel(e: ChangeEvent<HTMLInputElement>) {
     setUserLogin({
@@ -28,14 +42,29 @@ function Login() {
 
   useEffect(() => {
     if (token !== '') {
+      dispatch(addToken(token))
       history('/home');
     }
   }, [token]);
 
+  useEffect(() => {
+    if (respUserLogin.token !== "") {
+
+        // Verifica os dados pelo console (Opcional)
+        console.log("Token: " + respUserLogin.token)
+        console.log("ID: " + respUserLogin.id)
+
+        // Guarda as informações dentro do Redux (Store)
+        dispatch(addToken(respUserLogin.token))
+        dispatch(addId(respUserLogin.id.toString()))    // Faz uma conversão de Number para String
+        history('/home')
+    }
+}, [respUserLogin.token])
+
   async function logar(e: ChangeEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      await login(`/usuarios/logar`, userLogin, setToken);
+      await login(`/usuarios/logar`, userLogin, setRespUserLogin);
 
       alert('Usuário logado com sucesso!');
     } catch (error) {
