@@ -93,7 +93,7 @@ function Login() {
               align="center"
               className="textos1"
             >
-              Entrar
+              Entrar no blog
             </Typography>
             <TextField
               value={userLogin.usuario}
