@@ -1,30 +1,29 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Box } from '@material-ui/core';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import './Navbar.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { TokenState } from '../../../store/tokens/tokenReducer';
 import { addToken } from '../../../store/tokens/action';
 
-
 function Navbar() {
   let navigate = useNavigate();
-
-  let dispatch = useDispatch()
+  let dispatch = useDispatch();
   const token = useSelector<TokenState, TokenState['token']>(
     (state) => state.token
-  )
+  );
 
   function goLogout() {
-    dispatch(addToken(''))
+    dispatch(addToken(''));
     alert('Usuário deslogado');
     navigate('/login');
   }
 
-  var navbarComponent
+  var navbarComponent;
 
-  if (token !== ''){
-    navbarComponent = <AppBar position="static">
+  if (token !== '') {
+    navbarComponent = (
+      <AppBar position="sticky">
         <Toolbar variant="dense">
           <Box className="cursor">
             <Typography variant="h5" color="inherit">
@@ -41,7 +40,7 @@ function Navbar() {
               </Box>
             </Link>
 
-            <Link to='/posts'>
+            <Link to="/posts">
               <Box mx={1} className="cursor">
                 <Typography variant="h6" color="inherit">
                   postagens
@@ -64,14 +63,16 @@ function Navbar() {
                 </Typography>
               </Box>
             </Link>
+            
             <Box mx={1} className="cursor" onClick={goLogout}>
-              <Typography variant="h6" color="inherit">
-                logout
-              </Typography>
-            </Box>
+        <Typography variant="h6" color="inherit">
+          logout
+        </Typography>
+      </Box>
           </Box>
         </Toolbar>
-      </AppBar> 
+      </AppBar>
+    );
   }
 
   return (

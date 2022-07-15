@@ -14,36 +14,28 @@ import CadastroPostagem from './components/postagens/cadastroPostagem/CadastroPo
 import DeletarPostagem from './components/postagens/deletarPostagem/DeletarPostagem';
 import { Provider } from 'react-redux';
 import store from './store/store';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
     <Provider store={store}>
+      <ToastContainer />
       <Router>
         <Navbar />
         <div style={{ minHeight: '100vh' }}>
           <Routes>
             <Route path="/" element={<Login />} />
-
             <Route path="/home" element={<Home />} />
-
             <Route path="/login" element={<Login />} />
-
             <Route path="/cadastrousuario" element={<CadastroUsuario />} />
-
             <Route path="/temas" element={<ListaTema />} />
-
             <Route path="/posts" element={<ListaPostagem />} />
-
             <Route path="/formularioTema" element={<CadastroTema />} />
-
             <Route path="/formularioPost" element={<CadastroPostagem />} />
-
             <Route path="/formularioTema/:id" element={<CadastroTema />} />
-
             <Route path="/formularioPost/:id" element={<CadastroPostagem />} />
-
             <Route path="/deletarTema/:id" element={<DeletarTema />} />
-
             <Route path="/deletarPost/:id" element={<DeletarPostagem />} />
           </Routes>
         </div>

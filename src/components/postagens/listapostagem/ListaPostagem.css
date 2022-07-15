@@ -1,3 +1,8 @@
 .text-decorator-none{
     text-decoration: none;
 }
+
+.navbarlalala {
+    position: sticky !important;
+    top: 50px !important
+}

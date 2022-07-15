@@ -6,3 +6,9 @@
 .text-decorator-none{
     text-decoration: none;
 }
+
+.imagemLogo {
+    width: 50px;
+    object-fit: contain;
+    height: 50px
+}

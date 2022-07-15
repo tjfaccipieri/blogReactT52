@@ -124,6 +124,7 @@ function CadastroPostagem() {
       }
     } else {
       try {
+        console.log(postagem)
         await post('/postagens', postagem, setPostagem, {
           headers: {
             Authorization: token,
